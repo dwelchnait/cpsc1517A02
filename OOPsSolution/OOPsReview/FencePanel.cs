@@ -85,6 +85,23 @@ namespace OOPsReview
         //         consider using a fully-implemented property
         public double? Price { get; set; }
 
+        //Constructors
 
+        //default
+        public FencePanel()
+        {
+
+        }
+
+        //greedy
+        //list of parameters representing each possible data value in your
+        //   class (properties)
+        public FencePanel(double height, double width, string style, double? price)
+        {
+            Height = height;
+            Width = width;
+            Price = price;
+            Style = style;
+        }
     }
 }

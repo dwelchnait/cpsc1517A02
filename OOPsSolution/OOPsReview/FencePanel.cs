@@ -103,5 +103,23 @@ namespace OOPsReview
             Price = price;
             Style = style;
         }
+
+        //Behaviours
+        //a.k.a. a method
+        public double EstimatedNumberOfPanels(double linearlength)
+        {
+            //you could use either the property Width OR the private data
+            //    member _Width
+            //Using the property ensures all validation or excess logic
+            //    is in play
+            double numberofpanels = linearlength / _Width; 
+            return numberofpanels;
+        }
+
+        public double FenceArea(double linearlength)
+        {
+            //property Heights is auto implemented, there is no choice
+            return linearlength * Height;
+        }
     }
 }

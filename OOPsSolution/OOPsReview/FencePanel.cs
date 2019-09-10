@@ -67,7 +67,7 @@ namespace OOPsReview
             }
             set
             {
-                if (value > 0.0)
+                if (value <= 0.0)
                 {
                     new Exception("Width can not be 0 or less than 0.");
                 }

@@ -50,6 +50,45 @@ namespace OOPsReview
 
             //assume you are in a loop to gather multiple gates
 
+            //1st gate
+            //technique 1
+            //create instance of Gate
+            //collect data
+            //add to List
+            gateinfo = new Gate();
+            height = 6.25;
+            width = 4.0;
+            style = "Neighbour friendly - 1/2 picket: spruce";
+            price = 86.45;
+            gateinfo.Height = height;
+            gateinfo.Width = width;
+            gateinfo.Style = style;
+            gateinfo.Price = price;
+            gatelist.Add(gateinfo);
+
+            //2nd gate
+            //technique 2
+            //collect data
+            //create the Gate instance
+            //add to list
+            height = 6.25;
+            width = 3.0;
+            style = "Neighbour friendly: spruce";
+            price = 72.45;
+            gateinfo = new Gate(height, width, style, price);
+            gatelist.Add(gateinfo);
+
+
+            //create the Estimate
+            Estimate ClientEstimate = new Estimate();  //system default
+            ClientEstimate.LinearLength = linearlength;
+            ClientEstimate.Panel = panel;
+            ClientEstimate.Gates = gatelist;
+            ClientEstimate.CalculatePrice();
+
+            //ouptut client information
+
+
 
         }
     }

@@ -1,0 +1,62 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    Page.Title = string.Format("Razor - {0}", "Basic Form");
+
+    //retreive the data entered into the input controls
+    //var datatype: resolves at execution time
+    //to access a control of your page use: Request.Form["control parameter name"]
+    //the data returned comes in as a STRING
+    var myname = Request.Form["dataentry"];
+    var thebutton = Request.Form["theButton"];
+    //any other additional processing such as database access
+}
+
+@section banner {
+    <h1>Basic Form</h1>
+}
+
+<!-- determine if the page is a postback or not-->
+@if(IsPost)
+{
+    //this true path is done IF this page is returning
+    //from the previous sending
+
+    //IF you have multiple buttons on your form, you SHOULD
+    //determine which button was pressed; thus; dictating WHICH
+    //logic is to be EXECUTED
+    if (thebutton.Equals("pressme"))
+    {
+        //the Press Me button was pressed
+        if(string.IsNullOrEmpty(myname))
+        {
+            <p>You should enter your name.</p>
+        }
+        else
+        {
+            <p>Well: Hello there @myname</p>
+        }
+    }
+    else
+    {
+        //the Clear button was pressed
+        myname = "";
+        <p>Use pressed the clear button</p>
+    }
+}
+else
+{
+    // use to initialize items on your form BEFORE it is sent
+    // to the user for the FIRST time.
+    <p>this is the first time on this page.</p>
+}
+
+
+<form id="theform" method="post">
+    <label id="label1" for="dataentry">Enter your full name</label>&nbsp;&nbsp;
+    <input type="text" id="dataentry" name="dataentry"
+           value="@myname" />
+    <br /><br />
+    <button type="submit" id="PressMe" name="theButton" value="pressme">Press Me</button>
+    &nbsp;&nbsp;
+    <input type="submit" id="PressMe" name="theButton" value="Clear" />
+</form>

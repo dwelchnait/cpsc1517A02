@@ -119,6 +119,7 @@
     <Content Include="Scripts\esm\popper-utils.js.map" />
     <Content Include="SamplePages\RadioButtons.cshtml" />
     <Content Include="SamplePages\CheckBoxes.cshtml" />
+    <Content Include="SamplePages\DropdownList.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

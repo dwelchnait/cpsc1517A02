@@ -1,0 +1,130 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    Page.Title = string.Format("Razor - {0}", "Simple PKey Query");
+
+    //output variable
+    string regionid = "";
+    string regiondescription = "";
+
+    //input variables for web controls
+    var regionarg = Request.Form["RegionArg"];
+    var thebutton = Request.Form["theButton"];
+
+    //remember the 1st time the page is called
+    //input variables will be null
+
+    if (string.IsNullOrEmpty(regionarg))
+    {
+        regionarg = "0";
+    }
+
+    //this page will access the the database
+    //the project needs access to 2 more NuGet packages
+    //Microsoft.Aspnet.WebPages.Data
+    //Microsoft.Aspnet.Webpages.WebData
+
+    //connect to the database
+    //use the name attribute off your web connection string
+    var db = Database.Open("NWDB");
+
+    //create the sql command to be executed on the database
+    //input parameters will be represented by the use of placeholders
+    //placeholder are indexes (0, 1, 2,...)
+    //your command can used multiple placeholders
+    var sqlcommand = "SELECT RegionID, RegionDescription "
+                    + "FROM Region "
+                    + "WHERE RegionID = @0";
+
+
+    //execute command
+    //there is 3 ways to execute a query DEPENDING on your expected results
+    //a) a single row   .QuerySingle(command [, list of argments])
+    //b) 0, 1 or more records   .Query(command [, list of argments])
+    //c) a single value   .QueryValue(command [, list of argments])
+    //the list of argments are your positional incoming argment values
+
+
+    //primary key lookup
+    //result should  be one record
+    var results = db.QuerySingle(sqlcommand, regionarg);
+}
+
+@section banner {
+    <h1>Database PKey Query</h1>
+}
+
+@if(IsPost)
+{
+    if (thebutton.Equals("reset"))
+    {
+        regionarg = "";
+        regionid = "";
+        regiondescription = "";
+    }
+    else
+    {
+        //always check if you even have results
+
+        //checking for query results DEPEND on how the query was executed
+        // a) and c)   check for null
+        // b) check the .Count of the results
+
+        //a primary key lookup returns either the record or nothing
+        if (results == null)
+        {
+            <p>There is not region for your id:</p>
+            regionid = "";
+            regiondescription = "";
+        }
+        else
+        {
+            <p>Found</p>
+
+            //accessing the data out of your results
+            //there is 2 ways to access data on a result row
+            //a) using an index     syntax  result[index] where index value starts at
+            //                        0 which is the first column on the select
+            //b) using the Property Name    syntax result.PropertyName where the
+            //                        property name is the column title
+
+            //data returned has a datatype that matches the Property
+            regionid = results[0].ToString();
+            regiondescription = results.RegionDescription;
+        }
+    }
+}
+else
+{
+    regionarg = "";
+}
+
+<form id="theform" method="post">
+    <dic class="row">
+        <div class="col-6">
+            <div class="offset-1">
+                <label id="lblRegionArg" for="RegionArg">Enter a Region ID:</label>&nbsp;&nbsp;
+                <input type="number" step="1" min="1" id="RegionArg" name="RegionArg"
+                       value="@regionarg" placeholder="region id" />
+                <br /><br />
+                <button type="submit" id="theButton" name="theButton"
+                        value="submit" class="btn btn-primary">
+                    Fetch
+                </button>&nbsp;&nbsp;
+                <button type="submit" id="theButton" name="theButton"
+                        value="reset" class="btn btn-light">
+                    Reset
+                </button>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="offset-1">
+                <label id="lblRegionID">Region ID:</label>&nbsp;&nbsp;
+                <label id="RegionID">@regionid</label>
+                <br /><br />
+                <label id="lblRegionDescription">Region Name:</label>&nbsp;&nbsp;
+                <input type="text" id="RegionDescription" name="RegionDescription"
+                       value="@regiondescription" readonly />
+            </div>
+        </div>
+    </dic>
+</form>

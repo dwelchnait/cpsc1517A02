@@ -1,0 +1,93 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    Page.Title = string.Format("Razor - {0}", "DDL Selection Query");
+
+    var db = Database.Open("NWDB");
+    var sqlquery = @"SELECT CategoryID, CategoryName
+            FROM Categories
+            ORDER BY CategoryName";
+    var catinfo = db.Query(sqlquery);
+}
+
+
+@section banner {
+    <h1>DropdownList Selection Query</h1>
+}
+
+@if (IsPost)
+{
+    //obtain my data from the form
+    var choice = Request.Form["CategoryList"];
+    //check for a selection
+    if (choice.Equals("0"))
+    {
+        //  no:
+        //      message to user
+        <p style="color:darkturquoise">Select a product category to view:</p>
+    }
+    else
+    {
+        //  yes:
+        //query db for products of selected category
+        var prodquery = @"SELECT ProductID
+                FROM Products
+                WHERE CategoryID = @0";
+        var prodinfo = db.Query(prodquery, choice);
+        //      check to see if there are products for category
+        if (prodinfo.Count() == 0)
+        {
+            //       no products:
+            //               message to user
+            <p style="color:darkturquoise">There are no products for the selected category.</p>
+        }
+        else
+        {
+            //       yes products:
+            //              pass ddl value (CategoryID) to next page
+            // to go to another page use Response.Redirect(pagename) (GET method)
+            // to pass data along with the page
+            // add a ? after the name
+            // add for each parameter a coded pair of    label = value
+            // separate data pairs with an  &
+            // sample syntax    Response.Redirect(page.ext?lbl=value[&lbl=value ...])
+            //WARNING: value are passed in plain text on Url
+            Response.Redirect("WebGridDisplay.cshtml?cid=" + choice);
+        }
+    }
+}
+else
+{
+    //on page initialization (1st time)
+    //testing for an empty collection uses the .Count() method
+    //the .Query() command will give you a collection of 0, 1 or more records
+    if (catinfo.Count() == 0)
+    {
+        <p style="color:darkturquoise">There are no categories on file.</p>
+    }
+}
+
+<form id="theform" method="post">
+    <div class="offset-3">
+        <label id="lblCategoryList" for="CategoryList">Select product category to view:</label>
+        &nbsp;&nbsp;
+        <select id="CategoryList" name="CategoryList">
+            <option value="0">select ....</option>
+            @foreach (var item in catinfo)
+            {
+                //walk through the record collection of Category records
+                //for each record in the collection you will create an option line
+                //the display text will be the CategoryName
+                //the value attribute will use the CategoryID (FKey on Products)
+                //reminder of data access on a record
+                // a) index   syntax item[index]
+                // b) property name  syntax item.PropertyName (column title on the SQL select)
+                <option value="@item.CategoryID">@item.CategoryName</option>
+            }
+        </select>
+        &nbsp;&nbsp;
+        <button type="submit" id="theButton" name="theButton" value="submit"
+                class="btn btn-primary">
+            View Category Products ...
+        </button>
+    </div>
+</form>

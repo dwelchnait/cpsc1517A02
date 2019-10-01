@@ -31,9 +31,13 @@
     //input parameters will be represented by the use of placeholders
     //placeholder are indexes (0, 1, 2,...)
     //your command can used multiple placeholders
-    var sqlcommand = "SELECT RegionID, RegionDescription "
-                    + "FROM Region "
-                    + "WHERE RegionID = @0";
+    //var sqlcommand = "SELECT RegionID, RegionDescription "
+    //                + "FROM Region "
+    //                + "WHERE RegionID = @0";
+
+    var sqlcommand = @"SELECT RegionID, RegionDescription 
+                        FROM Region 
+                        WHERE RegionID = @0";
 
 
     //execute command

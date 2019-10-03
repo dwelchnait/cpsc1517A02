@@ -32,7 +32,10 @@
 
     //setup display to use the class WebGrid
     //assign the display data to the instance when it is created
-    var gridinstance = new WebGrid(prodinfo);
+    //to alter the number of rows display by the WebGrid instance,
+    //   you need to specify the value when you first create the instance
+    //   syntax attribute --> rowsPerPage:value
+    var gridinstance = new WebGrid(prodinfo, rowsPerPage:5);
 }
 
 
@@ -41,5 +44,28 @@
 }
 <div class="offset-1">
     <h3>Products for Category: @catname</h3>
-    @gridinstance.GetHtml()
+    <div class="col-11">
+        @gridinstance.GetHtml(
+            tableStyle:"table table-striped table-bordered table-hover",
+            mode: WebGridPagerModes.All,
+            firstText: "Start",
+            lastText: "End",
+            columns: gridinstance.Columns(
+               gridinstance.Column(columnName: "ProductID", header: "ID"),
+               gridinstance.Column(columnName: "ProductName", header: "Name"),
+               gridinstance.Column(columnName: "UnitPrice", header: "$", canSort: false,
+                    format: (item) => item.UnitPrice.ToString("0.00")),
+               gridinstance.Column(columnName: "UnitsInStock", header: "QoH", canSort: false),
+               gridinstance.Column(columnName: "Discontinued", header: "Disc", canSort: false,
+                    format:@<input type="checkbox" id="Discontinued"
+                                   name="Discontinued" disabled="disabled"
+                                   value="@item.Discontinued"
+                                   @(item.Discontinued == true ? "Checked" : "")/>),
+               gridinstance.Column(header:"", canSort:false,
+                    format:@<text>
+                            <a href="~/SamplePages/WebGridDestination.cshtml?pid=@item.ProductID"
+                               onclick="return confirm('Are you sure you wish to view @item.ProductName ?')">View</a>
+                            </text>)
+                ))
+    </div>
 </div>

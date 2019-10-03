@@ -1,0 +1,11 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    Page.Title = string.Format("Razor - {0}", "WebGrid Selected Destination");
+}
+
+
+@section banner {
+    <h1>Selection of row on WebGrid</h1>
+}
+
+<h3>You passed the product id of @Request.QueryString["pid"]</h3>

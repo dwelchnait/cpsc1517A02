@@ -100,6 +100,7 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\MySpacing.css" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -131,6 +132,8 @@
     <Content Include="SamplePages\WebGridDisplay.cshtml" />
     <Content Include="SamplePages\WebGridDestination.cshtml" />
     <Content Include="SamplePages\CRUDPage.cshtml" />
+    <Content Include="SamplePages\ProductEdit.cshtml" />
+    <Content Include="SamplePages\ProductSearch.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

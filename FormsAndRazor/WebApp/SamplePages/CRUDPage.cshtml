@@ -60,6 +60,9 @@ Order by CategoryName";
     //     Validator.Regex(@"^[A-Za-z][0-9][A-Za-z][0-9][A-Za-z][0-9]$",
     //     "Postal Code format invalid (T7T7T7"));
 }
+@section head{
+    <link href="~/Content/MySpacing.css" rel="stylesheet" />
+}
 
 @section banner{
     <h1>Database: CRUD Product - Insert</h1>
@@ -125,9 +128,9 @@ Order by CategoryName";
                     //  done above
                     //create sql command
                     var inscommand = @"INSERT INTO Products (ProductName, SupplierID, CategoryID,
-                            QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder,
-                            ReorderLevel, Discontinued)
-                            VALUES(@0, @1, @2, @3, @4, @5, @6, @7, 0)";
+                QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder,
+                ReorderLevel, Discontinued)
+                VALUES(@0, @1, @2, @3, @4, @5, @6, @7, 0)";
                     //execute the command
                     db.Execute(inscommand, productname,
                         supplierid.Equals("0") ? null : supplierid,
@@ -243,7 +246,7 @@ else
         <div class="col-md-12 text-center">
             <input type="submit" id="FormButton" name="FormButton"
                    class="btn btn-primary" value="Add" />
-            <input type="submit" id="FormButton" name="FormButton"
+            <input type="submit" id="FormButton" name="FormButton" formnovalidate
                    class="btn" value="Clear" />
         </div>
     </div>

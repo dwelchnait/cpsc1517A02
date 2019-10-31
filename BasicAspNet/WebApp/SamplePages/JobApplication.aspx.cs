@@ -9,9 +9,16 @@ namespace WebApp.SamplePages
 {
     public partial class JobApplication : System.Web.UI.Page
     {
+        //NO DB thus a temporary List<T> where T is JobApps
+        public static List<JobApps> AppList;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             Message.Text = "";
+            if (!Page.IsPostBack)
+            {
+                AppList = new List<JobApps>();
+            }
         }
 
         protected void Clear_Click(object sender, EventArgs e)
@@ -55,10 +62,21 @@ namespace WebApp.SamplePages
             }
             if (!found)
             {
+                //no job requested
                 jobs += " you did not select a job. Application Rejected.";
+            }
+            else
+            {
+                //list of jobs requested, save application
+                AppList.Add(new JobApps(FullName.Text, email, phone, time, jobs));
             }
             //display the message string in the output message control
             Message.Text = msg + jobs;
+
+            //display all collected applications
+            JobApplicatonList.DataSource = AppList; //only assigns the data
+            JobApplicatonList.DataBind(); //physical display of data
+
         }
     }
 }

@@ -194,6 +194,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="JobApps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SamplePages\BasicControls.aspx.cs">
       <DependentUpon>BasicControls.aspx</DependentUpon>

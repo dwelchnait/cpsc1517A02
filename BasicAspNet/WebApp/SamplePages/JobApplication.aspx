@@ -56,6 +56,10 @@
             <asp:Button ID="Submit" runat="server" Text="Submit" OnClick="Submit_Click" />&nbsp;&nbsp;
             <asp:Button ID="Clear" runat="server" Text="Clear" height="26px" width="63px" OnClick="Clear_Click" /><br />
             <asp:Label ID="Message" runat="server" ></asp:Label>
+            <br /><br />
+            <asp:GridView ID="JobApplicatonList" runat="server">
+
+            </asp:GridView>
         </div>
     </div>
     <script src="../Scripts/bootwrap-freecode.js"></script>

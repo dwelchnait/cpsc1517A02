@@ -13,5 +13,20 @@ namespace WebApp.SamplePages
         {
             Message.Text = "";
         }
+
+        protected void Clear_Click(object sender, EventArgs e)
+        {
+            //clear the form controls
+            FullName.Text = "";
+            EmailAddress.Text = "";
+            PhoneNumber.Text = "";
+            FullOrPartTime.ClearSelection();
+            Jobs.ClearSelection();
+        }
+
+        protected void Submit_Click(object sender, EventArgs e)
+        {
+            Message.Text = "you pressed the Submit button";
+        }
     }
 }

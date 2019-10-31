@@ -126,7 +126,9 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="SamplePages\BasicControls.aspx" />
+    <Content Include="SamplePages\ContestEntry.aspx" />
     <Content Include="SamplePages\HelloWorld.aspx" />
+    <Content Include="SamplePages\JobApplication.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -198,12 +200,26 @@
     <Compile Include="SamplePages\BasicControls.aspx.designer.cs">
       <DependentUpon>BasicControls.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SamplePages\ContestEntry.aspx.cs">
+      <DependentUpon>ContestEntry.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SamplePages\ContestEntry.aspx.designer.cs">
+      <DependentUpon>ContestEntry.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SamplePages\HelloWorld.aspx.cs">
       <DependentUpon>HelloWorld.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="SamplePages\HelloWorld.aspx.designer.cs">
       <DependentUpon>HelloWorld.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SamplePages\JobApplication.aspx.cs">
+      <DependentUpon>JobApplication.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SamplePages\JobApplication.aspx.designer.cs">
+      <DependentUpon>JobApplication.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>

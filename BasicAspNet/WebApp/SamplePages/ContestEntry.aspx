@@ -4,7 +4,7 @@
         <h1>Contest Entry</h1>
     </div>
 
-    <div class="row col-md-12">
+    <div class="row">
         <div class="alert alert-info">
             <blockquote style="font-style: italic">
                 This illustrates some simple controls to fill out an entry form for a contest. 
@@ -16,23 +16,26 @@
 
         </div>
     </div>
+    <br />
   <%-- Validation Controls
       they could be place beside the appropriate input field
       HOWEVER this would cause Bootwrap to fail
       THERFORE the controls will be group before the form (anywhere else)--%>
+    <div class="row">
+        <div class ="alert alert-danger">
     <asp:RequiredFieldValidator ID="RequiredFirstName" runat="server" 
-        ErrorMessage="First name is required" Display="None"
-         ForeColor="#990000"  SetFocusOnError="true" 
+        ErrorMessage="First name is required" 
+         ForeColor="#990000"  SetFocusOnError="true" Display="None"
          ControlToValidate="FirstName">
     </asp:RequiredFieldValidator>
     <asp:RequiredFieldValidator ID="RequiredLastName" runat="server" 
-        ErrorMessage="Last name is required" Display="None"
-         ForeColor="#990000"  SetFocusOnError="true" 
+        ErrorMessage="Last name is required" 
+         ForeColor="#990000"  SetFocusOnError="true" Display="None"
          ControlToValidate="LastName">
     </asp:RequiredFieldValidator>
     <asp:RequiredFieldValidator ID="RequiredStreetAddress1" runat="server" 
-        ErrorMessage="Street address1 is required" Display="None"
-         ForeColor="#990000"  SetFocusOnError="true" 
+        ErrorMessage="Street address1 is required" 
+         ForeColor="#990000"  SetFocusOnError="true" Display="None"
          ControlToValidate="StreetAddress1">
     </asp:RequiredFieldValidator>
     <asp:RequiredFieldValidator ID="RequiredCity" runat="server" 
@@ -43,20 +46,58 @@
     <asp:RequiredFieldValidator ID="RequiredPostalCode" runat="server" 
         ErrorMessage="PostalCode is required" Display="None"
          ForeColor="#990000"  SetFocusOnError="true" 
-         ControlToValidate="LastName"><%-- duplicate field error--%>
+         ControlToValidate="PostalCode">
     </asp:RequiredFieldValidator>
+    <asp:RegularExpressionValidator ID="RegExPostalCode" runat="server" 
+        ErrorMessage="Invalid postal code format (T6Y7U0)" Display="None"
+         ForeColor="#990000"  SetFocusOnError="true" 
+         ControlToValidate="PostalCode"
+         ValidationExpression="[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]">
+    </asp:RegularExpressionValidator>
     <asp:RequiredFieldValidator ID="RequiredEmailAddress" runat="server" 
         ErrorMessage="Email is required" Display="None"
          ForeColor="#990000"  SetFocusOnError="true" 
          ControlToValidate="EmailAddress">
     </asp:RequiredFieldValidator>
+    <asp:RegularExpressionValidator ID="RegExEmailAddress" runat="server" 
+        ErrorMessage="Invalid email" Display="None"
+         ForeColor="#990000"  SetFocusOnError="true" 
+         ControlToValidate="EmailAddress"
+         ValidationExpression="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$">
+    </asp:RegularExpressionValidator>
     <asp:RequiredFieldValidator ID="RequiredCheckAnswer" runat="server" 
         ErrorMessage="Skill testing answer is required" Display="None"
          ForeColor="#990000"  SetFocusOnError="true" 
          ControlToValidate="CheckAnswer">
     </asp:RequiredFieldValidator>
+<%--    <asp:CompareValidator ID="CompareCheckAnswer" runat="server" 
+        ErrorMessage="Check Answer: DataType Compare" Display="None"
+         ForeColor="#990000"  SetFocusOnError="true" 
+         ControlToValidate="CheckAnswer" Operator="DataTypeCheck" Type="Integer">
+    </asp:CompareValidator>--%>
+    <asp:CompareValidator ID="CompareCheckAnswer" runat="server" 
+        ErrorMessage="Check Answer: Constant Value Compare" Display="None"
+         ForeColor="#990000"  SetFocusOnError="true" 
+         ControlToValidate="CheckAnswer" Operator="Equal" ValueToCompare="15"
+        Type="Integer">
+    </asp:CompareValidator>
+<%--    <asp:CompareValidator ID="CompareCheckAnswer" runat="server" 
+        ErrorMessage="Check Answer: Compare to Another field" Display="None"
+         ForeColor="#990000"  SetFocusOnError="true" 
+         ControlToValidate="CheckAnswer" Operator="Equal" ControlToCompare="StreetAddress2"
+        Type="Integer">
+    </asp:CompareValidator>--%>
+
+    <%-- Sample of a Range validation using the nullable field StreetAddress 2 --%>
+    <asp:RangeValidator ID="RangeStreetAddress2" runat="server" 
+        ErrorMessage="Street address2 is limited to a number between 0 and 100" Display="None"
+         ForeColor="#990000"  SetFocusOnError="true" 
+         ControlToValidate="StreetAddress2" MinimumValue="0" MaximumValue="100" Type="Integer">
+    </asp:RangeValidator>
     <%-- Validation summary control to display the validation errors --%>
     <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
+    </div>
+    </div>
     <div class="row">
         <div class ="col-md-6">
             <fieldset class="form-horizontal">
@@ -125,8 +166,8 @@
         <div class="col-md-6">   
             <div class="col-md-offset-2">
                 <p>
-                    <asp:Button ID="Submit" runat="server" Text="Submit" />&nbsp;&nbsp;
-                    <asp:Button ID="Clear" runat="server" Text="Clear" CausesValidation="true"  />
+                    <asp:Button ID="Submit" runat="server" Text="Submit" OnClick="Submit_Click" />&nbsp;&nbsp;
+                    <asp:Button ID="Clear" runat="server" Text="Clear" CausesValidation="true" OnClick="Clear_Click"  />
                 </p>
                 <asp:Label ID="Message" runat="server" ></asp:Label><br /> <br />
                 <asp:GridView ID="EntryList" runat="server">

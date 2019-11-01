@@ -16,7 +16,47 @@
 
         </div>
     </div>
-  
+  <%-- Validation Controls
+      they could be place beside the appropriate input field
+      HOWEVER this would cause Bootwrap to fail
+      THERFORE the controls will be group before the form (anywhere else)--%>
+    <asp:RequiredFieldValidator ID="RequiredFirstName" runat="server" 
+        ErrorMessage="First name is required" Display="None"
+         ForeColor="#990000"  SetFocusOnError="true" 
+         ControlToValidate="FirstName">
+    </asp:RequiredFieldValidator>
+    <asp:RequiredFieldValidator ID="RequiredLastName" runat="server" 
+        ErrorMessage="Last name is required" Display="None"
+         ForeColor="#990000"  SetFocusOnError="true" 
+         ControlToValidate="LastName">
+    </asp:RequiredFieldValidator>
+    <asp:RequiredFieldValidator ID="RequiredStreetAddress1" runat="server" 
+        ErrorMessage="Street address1 is required" Display="None"
+         ForeColor="#990000"  SetFocusOnError="true" 
+         ControlToValidate="StreetAddress1">
+    </asp:RequiredFieldValidator>
+    <asp:RequiredFieldValidator ID="RequiredCity" runat="server" 
+        ErrorMessage="City is required" Display="None"
+         ForeColor="#990000"  SetFocusOnError="true" 
+         ControlToValidate="City">
+    </asp:RequiredFieldValidator>
+    <asp:RequiredFieldValidator ID="RequiredPostalCode" runat="server" 
+        ErrorMessage="PostalCode is required" Display="None"
+         ForeColor="#990000"  SetFocusOnError="true" 
+         ControlToValidate="LastName"><%-- duplicate field error--%>
+    </asp:RequiredFieldValidator>
+    <asp:RequiredFieldValidator ID="RequiredEmailAddress" runat="server" 
+        ErrorMessage="Email is required" Display="None"
+         ForeColor="#990000"  SetFocusOnError="true" 
+         ControlToValidate="EmailAddress">
+    </asp:RequiredFieldValidator>
+    <asp:RequiredFieldValidator ID="RequiredCheckAnswer" runat="server" 
+        ErrorMessage="Skill testing answer is required" Display="None"
+         ForeColor="#990000"  SetFocusOnError="true" 
+         ControlToValidate="CheckAnswer">
+    </asp:RequiredFieldValidator>
+    <%-- Validation summary control to display the validation errors --%>
+    <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
     <div class="row">
         <div class ="col-md-6">
             <fieldset class="form-horizontal">
@@ -88,8 +128,10 @@
                     <asp:Button ID="Submit" runat="server" Text="Submit" />&nbsp;&nbsp;
                     <asp:Button ID="Clear" runat="server" Text="Clear" CausesValidation="true"  />
                 </p>
-                <asp:Label ID="Message" runat="server" ></asp:Label><br />
-            
+                <asp:Label ID="Message" runat="server" ></asp:Label><br /> <br />
+                <asp:GridView ID="EntryList" runat="server">
+
+                </asp:GridView>
             </div>
         </div>
     </div>

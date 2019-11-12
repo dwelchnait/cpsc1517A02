@@ -23,7 +23,7 @@ namespace NorthwindSystem.DAL
         //   connection string name
         //this name is supplied to DbContext using the constructor
         //   of this class
-        public NorthwindContext():base("myconnectionstringname")
+        public NorthwindContext():base("NWDB")
         {
 
         }

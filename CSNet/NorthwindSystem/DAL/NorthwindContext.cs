@@ -37,6 +37,7 @@ namespace NorthwindSystem.DAL
         //    the DbSet<T> property name
         public DbSet<Product> Products { get; set; }
         public DbSet<Region> Regions { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
     } 
 }

@@ -131,5 +131,19 @@ namespace WebApp.NorthwindPages
         }
         #endregion
 
+        protected void Clear_Click(object sender, EventArgs e)
+        {
+            ProductID.Text = "";
+            ProductName.Text = "";
+            QuantityPerUnit.Text = "";
+            UnitPrice.Text = "";
+            UnitsInStock.Text = "";
+            UnitsOnOrder.Text = "";
+            ReorderLevel.Text = "";
+            ProductList.SelectedIndex = 0;
+            CategoryList.SelectedIndex = 0;
+            SupplierList.SelectedIndex = 0;
+            Discontinued.Checked = false;
+        }
     }
 }

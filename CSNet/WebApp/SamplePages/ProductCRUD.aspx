@@ -38,7 +38,8 @@
          <div class="col-md-12"> 
              <asp:Label ID="Label5" runat="server" Text="Select a Product"></asp:Label>&nbsp;&nbsp;
              <asp:DropDownList ID="ProductList" runat="server"></asp:DropDownList>&nbsp;&nbsp;
-             <asp:LinkButton ID="Search" runat="server" Font-Size="X-Large" >Search</asp:LinkButton>&nbsp;&nbsp;
+             <asp:LinkButton ID="Search" runat="server" Font-Size="X-Large" 
+                 OnClick="Search_Click" CausesValidation="false" >Search</asp:LinkButton>&nbsp;&nbsp;
              <asp:LinkButton ID="Clear" runat="server" Font-Size="X-Large" 
                  OnClick="Clear_Click" CausesValidation="false" >Clear</asp:LinkButton>&nbsp;&nbsp;
              <asp:LinkButton ID="AddProduct" runat="server" Font-Size="X-Large" >Add</asp:LinkButton>&nbsp;&nbsp;

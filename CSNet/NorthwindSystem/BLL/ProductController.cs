@@ -36,5 +36,20 @@ namespace NorthwindSystem.BLL
                 return results.ToList();
             }
         }
+
+        public List<Product> Products_List()
+        {
+            using (var context = new NorthwindContext())
+            {
+                return context.Products.ToList();
+            }
+        }
+        public Product Products_FindByID(int productid)
+        {
+            using (var context = new NorthwindContext())
+            {
+                return context.Products.Find(productid);
+            }
+        }
     }
 }

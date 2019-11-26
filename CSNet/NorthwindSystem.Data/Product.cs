@@ -48,6 +48,11 @@ namespace NorthwindSystem.Data
 
         [Key]
         public int ProductID { get; set; }
+
+        //entity validation goes in FRONT of the property that is
+        //   being validated
+        [Required(ErrorMessage ="Product name is required")]
+        [StringLength(160, ErrorMessage ="Product name is limited to 160 characters")]
         public string ProductName { get; set; }
 
         // [ForeignKey]  DO NOT USE
@@ -58,10 +63,20 @@ namespace NorthwindSystem.Data
         //   name in your mapping
         public int? SupplierID { get; set; }
         public int? CategoryID { get; set; }
+
+        [StringLength(20, ErrorMessage = "Quantity per Unit is limited to 20 characters")]
         public string QuantityPerUnit { get; set; }
+
+        [Range(0.00, double.MaxValue, ErrorMessage ="Unit Price must be 0.00 or greater")]
         public decimal? UnitPrice { get; set; }
+
+        [Range(0, Int16.MaxValue, ErrorMessage = "Units in Stock must be 0 to 32767")]
         public Int16? UnitsInStock { get; set; }
+
+        [Range(0, Int16.MaxValue, ErrorMessage = "Units on Order must be 0 to 32767")]
         public Int16? UnitsOnOrder { get; set; }
+
+        [Range(0, Int16.MaxValue, ErrorMessage = "Reorder Level must be 0 to 32767")]
         public Int16? ReorderLevel { get; set; }
         public bool Discontinued { get; set; }
 

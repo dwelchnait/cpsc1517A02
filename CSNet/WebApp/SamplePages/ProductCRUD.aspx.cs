@@ -1,11 +1,18 @@
-﻿using NorthwindSystem.BLL;
-using NorthwindSystem.Data;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
+#region Additional Namespaces
+using System.Data.Entity.Validation;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Core;
+using NorthwindSystem.BLL;
+using NorthwindSystem.Data;
+#endregion
 
 namespace WebApp.NorthwindPages
 {
@@ -214,6 +221,353 @@ namespace WebApp.NorthwindPages
                     LoadMessageDisplay(errormsgs, "alert alert-danger");
                 }
             }
+        }
+
+        protected void AddProduct_Click(object sender, EventArgs e)
+        {
+            //recheck validation
+            if (Page.IsValid)
+            {
+                //check any event code validation
+                //examples
+                //assume that the category id is required
+                if (CategoryList.SelectedIndex == 0)
+                {
+                    errormsgs.Add("Category is required");
+                }
+                //check the string length of QuantityPerUnit
+                if (QuantityPerUnit.Text.Length > 20)
+                {
+                    errormsgs.Add("Quantity per Unit is limited to 20 characters");
+                }
+
+                //is data still good
+                if (errormsgs.Count > 0)
+                {
+                    LoadMessageDisplay(errormsgs, "alert alert-info");
+                }
+                else
+                {
+                    try
+                    {
+
+
+                        //assume at this point the data is good
+                        //standard add pattern
+                        //connect to the controller
+                        ProductController sysmgr = new ProductController();
+                        //create and load an instance of the entity
+                        //  since there was no constructor placed in the 
+                        //   entity, when one creates the instance the
+                        //  default system constructor will be used
+                        Product item = new Product();
+                        //what about ProductID??
+                        //   since ProductID is an identity field it does NOT
+                        //   need to be loaded into the new instance
+                        item.ProductName = ProductName.Text.Trim();
+                        //long way of dealing with nullable numerics
+                        if (CategoryList.SelectedIndex == 0)
+                        {
+                            item.CategoryID = null;
+                        }
+                        else
+                        {
+                            item.CategoryID = int.Parse(CategoryList.SelectedValue);
+                        }
+                        //short way
+                        item.SupplierID =
+                            SupplierList.SelectedIndex == 0 ? (int?)null : int.Parse(SupplierList.SelectedValue);
+                        item.QuantityPerUnit =
+                            string.IsNullOrEmpty(QuantityPerUnit.Text) ? null : QuantityPerUnit.Text;
+                        item.UnitPrice =
+                            string.IsNullOrEmpty(UnitPrice.Text) ? (decimal?)null : decimal.Parse(UnitPrice.Text);
+                        item.UnitsInStock =
+                            string.IsNullOrEmpty(UnitsInStock.Text) ? (Int16?)null : Int16.Parse(UnitsInStock.Text);
+                        item.UnitsOnOrder =
+                            string.IsNullOrEmpty(UnitsOnOrder.Text) ? (Int16?)null : Int16.Parse(UnitsOnOrder.Text);
+                        item.ReorderLevel =
+                            string.IsNullOrEmpty(ReorderLevel.Text) ? (Int16?)null : Int16.Parse(ReorderLevel.Text);
+                        //What about Discontinued??
+                        item.Discontinued = false;
+
+                        //issue the BLL call
+                        int newProductID = sysmgr.Products_Add(item);
+
+                        //give feedback
+                        //if you get to execute the feedback code, it means
+                        //   that the product has been successfully added to
+                        //   the database
+                        ProductID.Text = newProductID.ToString();
+                        errormsgs.Add("Product has been added");
+                        LoadMessageDisplay(errormsgs, "alert alert-success");
+                        //is there any other controls on the form that
+                        //   need to be refreshed??
+                        BindProductList(); //by default, list will be at index 0
+                        ProductList.SelectedValue = ProductID.Text;
+                    }
+                    catch (DbUpdateException ex)
+                    {
+                        UpdateException updateException = (UpdateException)ex.InnerException;
+                        if (updateException.InnerException != null)
+                        {
+                            errormsgs.Add(updateException.InnerException.Message.ToString());
+                        }
+                        else
+                        {
+                            errormsgs.Add(updateException.Message);
+                        }
+                        LoadMessageDisplay(errormsgs, "alert alert-danger");
+                    }
+                    catch (DbEntityValidationException ex)
+                    {
+                        foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                        {
+                            foreach (var validationError in entityValidationErrors.ValidationErrors)
+                            {
+                                errormsgs.Add(validationError.ErrorMessage);
+                            }
+                        }
+                        LoadMessageDisplay(errormsgs, "alert alert-danger");
+                    }
+                    catch (Exception ex)
+                    {
+                        errormsgs.Add(GetInnerException(ex).ToString());
+                        LoadMessageDisplay(errormsgs, "alert alert-danger");
+                    }
+                }
+            }
+        }
+
+        protected void UpdateProduct_Click(object sender, EventArgs e)
+        {
+            //recheck validation
+            if (Page.IsValid)
+            {
+                //check any event code validation
+                //examples
+                //assume that the category id is required
+                if (CategoryList.SelectedIndex == 0)
+                {
+                    errormsgs.Add("Category is required");
+                }
+                //check the string length of QuantityPerUnit
+                if (QuantityPerUnit.Text.Length > 20)
+                {
+                    errormsgs.Add("Quantity per Unit is limited to 20 characters");
+                }
+
+                //on update, ensure you have your primary key value
+                int productid = 0;
+                if (string.IsNullOrEmpty(ProductID.Text))
+                {
+                    errormsgs.Add("Search for a product to update");
+                }
+                else if (!int.TryParse(ProductID.Text, out productid))
+                {
+                    errormsgs.Add("Product id is invalid");
+                }
+                else if (productid < 1)
+                {
+                    errormsgs.Add("Product id is invalid");
+                }
+
+                //is data still good
+                if (errormsgs.Count > 0)
+                {
+                    LoadMessageDisplay(errormsgs, "alert alert-info");
+                }
+                else
+                {
+                    try
+                    {
+
+                        //assume at this point the data is good
+                        //standard add pattern
+                        //connect to the controller
+                        ProductController sysmgr = new ProductController();
+                        //create and load an instance of the entity
+                        //  since there was no constructor placed in the 
+                        //   entity, when one creates the instance the
+                        //  default system constructor will be used
+                        Product item = new Product();
+                        item.ProductID = productid;
+                        item.ProductName = ProductName.Text.Trim();
+                        //long way of dealing with nullable numerics
+                        if (CategoryList.SelectedIndex == 0)
+                        {
+                            item.CategoryID = null;
+                        }
+                        else
+                        {
+                            item.CategoryID = int.Parse(CategoryList.SelectedValue);
+                        }
+                        //short way
+                        item.SupplierID =
+                            SupplierList.SelectedIndex == 0 ? (int?)null : int.Parse(SupplierList.SelectedValue);
+                        item.QuantityPerUnit =
+                            string.IsNullOrEmpty(QuantityPerUnit.Text) ? null : QuantityPerUnit.Text;
+                        item.UnitPrice =
+                            string.IsNullOrEmpty(UnitPrice.Text) ? (decimal?)null : decimal.Parse(UnitPrice.Text);
+                        item.UnitsInStock =
+                            string.IsNullOrEmpty(UnitsInStock.Text) ? (Int16?)null : Int16.Parse(UnitsInStock.Text);
+                        item.UnitsOnOrder =
+                            string.IsNullOrEmpty(UnitsOnOrder.Text) ? (Int16?)null : Int16.Parse(UnitsOnOrder.Text);
+                        item.ReorderLevel =
+                            string.IsNullOrEmpty(ReorderLevel.Text) ? (Int16?)null : Int16.Parse(ReorderLevel.Text);
+                        //What about Discontinued??
+                        //you will want to take the current value of discountinued
+                        item.Discontinued = Discontinued.Checked;
+
+                        //issue the BLL call
+                        int rowsaffected = sysmgr.Products_Update(item);
+
+                        //give feedback
+                        if (rowsaffected > 0)
+                        {
+                            errormsgs.Add("Product has been updated");
+                            LoadMessageDisplay(errormsgs, "alert alert-success");
+                            //is there any other controls on the form that
+                            //   need to be refreshed??
+                            BindProductList(); //by default, list will be at index 0
+                            ProductList.SelectedValue = ProductID.Text;
+                        }
+                        else
+                        {
+                            errormsgs.Add("Product has not been updated. Product was not found");
+                            LoadMessageDisplay(errormsgs, "alert alert-warning");
+                            //is there any other controls on the form that
+                            //   need to be refreshed??
+                            BindProductList(); //by default, list will be at index 0
+                            
+                            //optionally you could clear your fields
+                        }
+                       
+                    }
+                    catch (DbUpdateException ex)
+                    {
+                        UpdateException updateException = (UpdateException)ex.InnerException;
+                        if (updateException.InnerException != null)
+                        {
+                            errormsgs.Add(updateException.InnerException.Message.ToString());
+                        }
+                        else
+                        {
+                            errormsgs.Add(updateException.Message);
+                        }
+                        LoadMessageDisplay(errormsgs, "alert alert-danger");
+                    }
+                    catch (DbEntityValidationException ex)
+                    {
+                        foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                        {
+                            foreach (var validationError in entityValidationErrors.ValidationErrors)
+                            {
+                                errormsgs.Add(validationError.ErrorMessage);
+                            }
+                        }
+                        LoadMessageDisplay(errormsgs, "alert alert-danger");
+                    }
+                    catch (Exception ex)
+                    {
+                        errormsgs.Add(GetInnerException(ex).ToString());
+                        LoadMessageDisplay(errormsgs, "alert alert-danger");
+                    }
+                }
+            }
+        }
+
+        protected void RemoveProduct_Click(object sender, EventArgs e)
+        {
+            
+                //check any event code validation
+               
+                //on update, ensure you have your primary key value
+                int productid = 0;
+                if (string.IsNullOrEmpty(ProductID.Text))
+                {
+                    errormsgs.Add("Search for a product to update");
+                }
+                else if (!int.TryParse(ProductID.Text, out productid))
+                {
+                    errormsgs.Add("Product id is invalid");
+                }
+                else if (productid < 1)
+                {
+                    errormsgs.Add("Product id is invalid");
+                }
+
+                //is data still good
+                if (errormsgs.Count > 0)
+                {
+                    LoadMessageDisplay(errormsgs, "alert alert-info");
+                }
+                else
+                {
+                    try
+                    {
+
+                        //assume at this point the data is good
+                        //standard add pattern
+                        //connect to the controller
+                        ProductController sysmgr = new ProductController();
+                        
+                        //issue the BLL call
+                        int rowsaffected = sysmgr.Products_Delete(productid);
+
+                        //give feedback
+                        if (rowsaffected > 0)
+                        {
+                            errormsgs.Add("Product has been discontinued");
+                            LoadMessageDisplay(errormsgs, "alert alert-success");
+                            //is there any other controls on the form that
+                            //   need to be refreshed??
+                            BindProductList(); //by default, list will be at index 0
+                            ProductList.SelectedValue = ProductID.Text;
+                            Discontinued.Checked = true;
+                        }
+                        else
+                        {
+                            errormsgs.Add("Product has not been discontinued. Product was not found");
+                            LoadMessageDisplay(errormsgs, "alert alert-warning");
+                            //is there any other controls on the form that
+                            //   need to be refreshed??
+                            BindProductList(); //by default, list will be at index 0
+
+                            //optionally you could clear your fields
+                        }
+
+                    }
+                    catch (DbUpdateException ex)
+                    {
+                        UpdateException updateException = (UpdateException)ex.InnerException;
+                        if (updateException.InnerException != null)
+                        {
+                            errormsgs.Add(updateException.InnerException.Message.ToString());
+                        }
+                        else
+                        {
+                            errormsgs.Add(updateException.Message);
+                        }
+                        LoadMessageDisplay(errormsgs, "alert alert-danger");
+                    }
+                    catch (DbEntityValidationException ex)
+                    {
+                        foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                        {
+                            foreach (var validationError in entityValidationErrors.ValidationErrors)
+                            {
+                                errormsgs.Add(validationError.ErrorMessage);
+                            }
+                        }
+                        LoadMessageDisplay(errormsgs, "alert alert-danger");
+                    }
+                    catch (Exception ex)
+                    {
+                        errormsgs.Add(GetInnerException(ex).ToString());
+                        LoadMessageDisplay(errormsgs, "alert alert-danger");
+                    }
+                }
+            
         }
     }
 }

@@ -74,11 +74,11 @@
                   
                   <asp:Label ID="Label3" runat="server" Text="Supplier"
                      AssociatedControlID="SupplierList"></asp:Label>
-                <asp:DropDownList ID="SupplierList" runat="server" Width="350px" ></asp:DropDownList> 
+                <asp:DropDownList ID="SupplierList" runat="server" Width="350px" DataSourceID="SupplierListODS" DataTextField="CompanyName" DataValueField="SupplierID"></asp:DropDownList> 
 
                     <asp:Label ID="Label6" runat="server" Text="Category"
                      AssociatedControlID="CategoryList"></asp:Label>
-                <asp:DropDownList ID="CategoryList" runat="server"  Width="350px"></asp:DropDownList> 
+                <asp:DropDownList ID="CategoryList" runat="server" Width="350px" DataSourceID="CategoryListODS" DataTextField="CategoryName" DataValueField="CategoryID"></asp:DropDownList> 
                
                     <asp:Label ID="Label7" runat="server" Text="Quantity/Unit"
                      AssociatedControlID="QuantityPerUnit"></asp:Label>
@@ -107,7 +107,11 @@
             
             </fieldset>
         </div>
-       
+    <asp:ObjectDataSource ID="SupplierListODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="Supplier_List" TypeName="NorthwindSystem.BLL.SupplierController">
 
+    </asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="CategoryListODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="Categories_List" TypeName="NorthwindSystem.BLL.CategoryController">
+
+    </asp:ObjectDataSource>
     <script src="../Scripts/bootwrap-freecode.js"></script>
 </asp:Content>

@@ -8,13 +8,16 @@ using System.Threading.Tasks;
 #region Additional Namespaces
 using NorthwindSystem.DAL;
 using NorthwindSystem.Data;
+using System.ComponentModel; //ODS
 #endregion
 
 namespace NorthwindSystem.BLL
 {
+    [DataObject]
     public class ProductController
     {
         //using SqlQuery to do non primary key lookups
+        [DataObjectMethod(DataObjectMethodType.Select,false)]
         public List<Product> Products_FindByCategory(int categoryid)
         {
             using (var context = new NorthwindContext())
@@ -36,7 +39,7 @@ namespace NorthwindSystem.BLL
                 return results.ToList();
             }
         }
-
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<Product> Products_List()
         {
             using (var context = new NorthwindContext())
@@ -44,6 +47,7 @@ namespace NorthwindSystem.BLL
                 return context.Products.ToList();
             }
         }
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
         public Product Products_FindByID(int productid)
         {
             using (var context = new NorthwindContext())
